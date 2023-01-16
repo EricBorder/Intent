@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import kotlinx.coroutines.NonCancellable.start
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,10 +17,11 @@ class MainActivity : AppCompatActivity() {
             val intento1 = Intent(this, SecondActivity::class.java)
             // Añade datos adicionales al Intent
             intento1.putExtra("EXTRA_MESSAGE", 8)
+            intento1.putExtra("NUMERO2",4)
             // Inicia la segunda actividad
             startActivityForResult(intento1, REQUEST_EXTRA_MESSAGE)
-            startActivityForResult(intento1, REQUEST_PERMISSION)
-            startActivityForResult(intento1, REQUEST_TO_POST)
+            /*startActivityForResult(intento1, REQUEST_PERMISSION)
+            startActivityForResult(intento1, REQUEST_TO_POST)*/
         }
     }
 
@@ -41,18 +41,21 @@ class MainActivity : AppCompatActivity() {
                 // si el intent no es null muestro el resultado
                 if (data != null) {
                     Log.d("asd", "recibido")
-                    textView1.text = data.getStringExtra("saludo")
+                    //textView1.text = data.getStringExtra("saludo")
+                    textView1.text = data.getIntExtra("Resultado",0).toString()
+                    textView2.text = data.getIntExtra("Resultado2",0).toString()
+                    textView3.text = data.getIntExtra("Resultado3",0).toString()
                 }; }
             REQUEST_PERMISSION -> {
                 if (data != null) {
                     Log.d("asd", "recibido")
-                    textView2.text = data.getStringExtra("despedida")
+                    textView2.text = data.getIntExtra("Resultado2",0).toString()
                 }; }
 
             REQUEST_TO_POST -> {
                 if (data != null) {
                     Log.d("asd", "recibido")
-                    textView3.text = data.getStringExtra("despedida2")
+                    textView3.text = data.getIntExtra("Resultado3",0).toString()
                 }; }
 
         }
