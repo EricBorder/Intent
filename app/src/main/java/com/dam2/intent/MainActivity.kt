@@ -1,27 +1,42 @@
 package com.dam2.intent
 
 import android.content.Intent
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Button
-import android.widget.TextView
+import android.widget.ImageView
+
 
 class MainActivity : AppCompatActivity() {
+
+    val REQUEST_IMAGE_CAPTURE = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var enviar: Button = findViewById(R.id.Pulsar)
-        val url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        enviar.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(url)
-            }
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }
 
+        // El botón para iniciar la camara
+        val callButton = findViewById<Button>(R.id.Pulsar)
+
+
+        callButton.setOnClickListener {
+            // creamos un intent específico que iniciará el teléfono
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            // llamamos a la activity treléfono
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val imageView = findViewById<ImageView>(R.id.imageView)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+            val imageBitmap = data.extras!!.get("data") as Bitmap
+            imageView.setImageBitmap(imageBitmap)
+        }
+    }
 }
+
+
